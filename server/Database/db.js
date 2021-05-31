@@ -1,17 +1,19 @@
-const mongoose = require('mongoose');
 
-async function connectingDB() {
-try {
-    await mongoose.connect(process.env['uri'], {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-    });
-    console.log("connected to DB successfully")
-} catch (error) {
-    console.log(error);
-    console.log("failed to connect to db.")
-}
+
+const mongoose = require("mongoose")
+
+// TODO: move to .env/sec
+// TODO: use async await instead of then/catch
+function initializeDBConnection() {
+  // Connecting to DB
+  mongoose.connect("mongodb+srv://Anjali_R:anjali@neog-mongosession.dyxsl.mongodb.net/inventory?retryWrites=true&w=majority", {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+  }) 
+    .then(() => console.log("successfully connected"))
+    .catch(error => console.error("mongoose connection failed...", error))
 }
 
-module.exports =  {connectingDB};
+module.exports = { initializeDBConnection }
+
