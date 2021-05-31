@@ -16,4 +16,3 @@ function initializeDBConnection() {
 }
 
 module.exports = { initializeDBConnection }
-
