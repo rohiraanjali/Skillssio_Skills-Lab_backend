@@ -1,18 +1,33 @@
 const mongoose = require("mongoose");
+require("mongoose-type-url");
 
-const VideoSchema = new mongoose.Schema({
-    name:{
-        type:String
-    },
-    description:{
-        type:String
-    },
-})
+const videoSchema = new mongoose.Schema({
 
-const Videos = new mongoose.model("Video",VideoSchema)
+    avatar: {
+        type: String,
+    },
+    channelName: {
+        type: String,
+        required: 'channel information is required',
+        default: true,
+    },
+    level: {
+        type: String,
+    },
+    thumbnail: {
+        type: String,
+    },
+    videoID: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    videoTitle: {
+        type: String,
+        required: ' video information is required',
+        default: true
+    }
+});
+const Videos = mongoose.model("Video", videoSchema);
+
 module.exports = Videos;
-// phle insert wala function use krke tumko ise data dalna pdega backend me
-// phir api bnaao get wali
-// or frotend me call kro simple
-// ok toh jo yeh apna index.js me dummy data le rhe wo mai videos ka poora data phle ek alag file me daaldu yha??
-//  data kaha hai?
