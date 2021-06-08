@@ -1,1 +1,0 @@
-const generateToken = async(id) => {
