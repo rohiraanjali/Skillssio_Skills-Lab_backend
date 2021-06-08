@@ -2,12 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const { initializeDBConnection } = require("./Database/db.js")
+const { initializeDBConnection } = require("./Database/db.js");
 const videoresults = require('./routes/videos.router.js');
 const users = require('./routes/users.router.js');
+const historyVideos = require("./routes/history.router.js");
+const watchLaterVideos = require("./routes/watchLater.router.js");
+const playListVideos = require("./routes/playLists.router.js")
 // const video = require("./router/videos.router")
 const errorHandler  = require("./middlewares/error-handler.js")
 const routeNotFound = require("./middlewares/route-not-found.js")
+
 const app = express()
 const port = 5000
 
@@ -22,6 +26,9 @@ app.get("/", function(req, res) {
 
 app.use("/videos", videoresults);
 app.use("/users", users);
+app.use("/history", historyVideos);
+app.use("/watchLater", watchLaterVideos);
+app.use("/playLists", playListVideos)
 
 app.use(errorHandler);
 app.use(routeNotFound);

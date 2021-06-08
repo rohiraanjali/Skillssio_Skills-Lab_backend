@@ -1,5 +1,3 @@
-
-
 const mongoose = require("mongoose")
 
 // TODO: move to .env/sec
