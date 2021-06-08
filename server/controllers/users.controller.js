@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Users = require("../models/users.model"); 
-const generateToken = require("../utils/generateToken");
+const generateToken = require("../middlewares/createToken");
 
 const registerUser = asyncHandler(async(req, res) => {
 const {name, email, password, profilePicture} = req.body;
@@ -27,7 +27,6 @@ if(newUser) {
         password: newUser.password,
         profilePicture: newUser.profilePicture,
         // token: generateToken(newUser._id)
-
     })
 } else {
     res.status(400);
@@ -38,16 +37,16 @@ if(newUser) {
 const authUser = asyncHandler(async(req,res) => {
     const {email , password } = req.body;
 
-    const newUser = await Users.findOne({ email })
+    const userExists = await Users.findOne({ email })
 
-    if(newUser && (await newUser.matchPassword(password))) {
+    if(userExists && (await userExists.matchPassword(password))) {
         res.json({
-        _id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        password: newUser.password,
-        profilePicture: newUser.profilePicture,
-        token: generateToken(newUser._id)
+        _id: userExists.id,
+        name: userExists.name,
+        email: userExists.email,
+        password: userExists.password,
+        profilePicture: userExists.profilePicture,
+        token: generateToken(userExists._id)
         })
     }
     else {
@@ -56,4 +55,19 @@ const authUser = asyncHandler(async(req,res) => {
     }
 })
 
-module.exports = {registerUser, authUser}
+const checkUser = async(req, res, next, uid) => {
+const usercheck = await Users.findOne({_id: uid},{password:0,createdAt:0,updatedAt:0,__v:0}).lean()
+.populate({path: "history", model: "Video"})
+.populate({path: "watchLater", model: "Video"})
+.populate({path: "payLists", populate: {path: "videos" , model:"Video"}})
+
+if(usercheck) {
+    req.usercheck = usercheck;
+    console.log(usercheck)
+    next();
+    return;
+}
+res.status(404).json({message: "User not found"})
+}
+
+module.exports = {registerUser, authUser , checkUser}
