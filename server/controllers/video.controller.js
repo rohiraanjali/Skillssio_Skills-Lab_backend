@@ -15,8 +15,8 @@ const getVideos = async (req, res) => {
 	
 	const getVideosById = async(req, res) => {
 		try {
-			const VideoId = req.params;
-			const video = await Videos.findById(VideoId.id); // ek kaam kro objectID type change krdo sbka
+			const {videoId} = req.params;
+			const video = await Videos.findById(videoId);
 	
 			console.log(video); 
 			if(video) {
