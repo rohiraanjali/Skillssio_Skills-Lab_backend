@@ -6,16 +6,21 @@ const registerUser = asyncHandler(async(req, res) => {
 const {name, email, password, profilePicture} = req.body;
 
 const userExists = await Users.findOne({ email });
-
 if(userExists) {
-    res.status(400)
-    throw new Error('User Already Exists')
- }
+    return res.status(500).json({
+        message: "Email address is already registered"
+     })
+}
+
 
 const newUser = await Users.create({
     name,
     email, 
-    password,f(newUser) {
+    password,
+    profilePicture
+})
+
+if(newUser) {
     res.status(201).json({
         _id: newUser.id,
         name: newUser.name,
@@ -23,10 +28,12 @@ const newUser = await Users.create({
         password: newUser.password,
         profilePicture: newUser.profilePicture,
         // token: generateToken(newUser._id)
+        message: "Hurray!!! User registered sucessfully"
     })
 } else {
-    res.status(400);
-    throw new Error("error occured !!")
+    return res.status(400).json({
+        message: "Some error occured. Try again."
+     })
 }
 })
 
@@ -46,8 +53,9 @@ const authUser = asyncHandler(async(req,res) => {
         })
     }
     else {
-        res.status(400);
-        throw new Error("Invalid email or password!")
+        return res.status(500).json({
+            message: "Invalid Email or password"
+         })
     }
 })
 
@@ -63,7 +71,7 @@ if(usercheck) {
     next();
     return;
 }
-res.status(404).json({message: "User not found"})
+return res.status(500).json({message: "User not found"})
 }
 
 module.exports = {registerUser, authUser , checkUser}
