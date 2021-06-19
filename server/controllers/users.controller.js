@@ -10,16 +10,12 @@ const userExists = await Users.findOne({ email });
 if(userExists) {
     res.status(400)
     throw new Error('User Already Exists')
-}
+ }
 
 const newUser = await Users.create({
     name,
     email, 
-    password,
-    profilePicture
-})
-
-if(newUser) {
+    password,f(newUser) {
     res.status(201).json({
         _id: newUser.id,
         name: newUser.name,
