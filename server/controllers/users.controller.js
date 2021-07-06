@@ -41,7 +41,7 @@ const authUser = asyncHandler(async(req,res) => {
     const {email , password } = req.body;
 
     const userExists = await Users.findOne({ email })
-
+    console.log(userExists)
     if(userExists && (await userExists.matchPassword(password))) {
         res.json({
         _id: userExists.id,
@@ -60,18 +60,22 @@ const authUser = asyncHandler(async(req,res) => {
 })
 
 const checkUser = async(req, res, next, uid) => {
-const usercheck = await Users.findOne({_id: uid},{password:0,createdAt:0,updatedAt:0,__v:0}).lean()
+const user = await Users.findOne({_id: uid},{password:0,createdAt:0,updatedAt:0,__v:0}).lean()
 .populate({path: "history", model: "Video"})
 .populate({path: "watchLater", model: "Video"})
 .populate({path: "payLists", populate: {path: "videos" , model:"Video"}})
 
-if(usercheck) {
-    req.usercheck = usercheck;
-    console.log(usercheck)
+if(user) {
+    req.user = user;
     next();
     return;
 }
-return res.status(500).json({message: "User not found"})
+return res.status(404).json({message: "User not found"})
 }
 
-module.exports = {registerUser, authUser , checkUser}
+const getUser = (req,res) => {
+    let {user} = req;
+    return res.status(200).json({ user })
+}
+
+module.exports = {registerUser, authUser , checkUser, getUser}

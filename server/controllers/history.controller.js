@@ -8,6 +8,8 @@ if(user.history.find(vid => vid == videoId)) {
 user.history.remove(videoId);
 user.history.push(videoId);
 
+console.log(user.history)
+
 await user.save (async(err, user) => {
     if(user) {
         const {history} = await user.execPopulate({path: "history", populate: "video"});
