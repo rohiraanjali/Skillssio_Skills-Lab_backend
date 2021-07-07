@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const expressAsyncHandler = require("express-async-handler");
+const { ObjectId } = mongoose.Schema.Types; 
 
 const userSchema = new mongoose.Schema({
     name: {

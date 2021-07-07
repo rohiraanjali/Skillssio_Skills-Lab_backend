@@ -5,6 +5,7 @@ const generateToken = require("../middlewares/createToken");
 const registerUser = asyncHandler(async(req, res) => {
 const {name, email, password, profilePicture} = req.body;
 
+console.log(userExists)
 const userExists = await Users.findOne({ email });
 if(userExists) {
     return res.status(500).json({
@@ -20,26 +21,29 @@ const newUser = await Users.create({
     profilePicture
 })
 
-if(newUser) {
-    res.status(201).json({
-        _id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        password: newUser.password,
-        profilePicture: newUser.profilePicture,
-        // token: generateToken(newUser._id)
-        message: "Hurray!!! User registered sucessfully"
-    })
-} else {
-    return res.status(400).json({
-        message: "Some error occured. Try again."
-     })
+try {
+    if(newUser) {
+        res.status(201).json({
+            _id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            password: newUser.password,
+            profilePicture: newUser.profilePicture,
+            message: "Hurray!!! User registered sucessfully"
+        })
+    }
+} catch(error) {
+   console.log(error.message);
 }
+//   res.status(400).json({
+//         message: "Some error occured. Try again."
+//      })
+// }
 })
 
 const authUser = asyncHandler(async(req,res) => {
     const {email , password } = req.body;
-
+    console.log(email, password, "from line")
     const userExists = await Users.findOne({ email })
     console.log(userExists)
     if(userExists && (await userExists.matchPassword(password))) {
@@ -73,9 +77,9 @@ if(user) {
 return res.status(404).json({message: "User not found"})
 }
 
-const getUser = (req,res) => {
-    let {user} = req;
-    return res.status(200).json({ user })
-}
+// const getUser = (req,res) => {
+//     let {user} = req;
+//     return res.status(200).json({ user })
+// }
 
-module.exports = {registerUser, authUser , checkUser, getUser}
+module.exports = {registerUser, authUser , checkUser}
