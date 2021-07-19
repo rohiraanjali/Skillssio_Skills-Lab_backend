@@ -3,9 +3,9 @@ const Users = require("../models/users.model");
 const addToHistory = async(req, res) => {
     const {uid,videoId} = req.params;
     const user = await Users.findOne({_id:uid});
- 
+    console.log(user.history)
+    console.log(user.history.find(vid => vid == videoId))
     if(user.history.find(vid => vid == videoId)){
-        console.log("log ho ra")
         await user.history.remove(videoId);
         user.history.push(videoId);
         await user.save(async(err,user) => {
