@@ -73,13 +73,15 @@ if(user) {
     req.user = user;
     next();
     return;
+
 }
 return res.status(404).json({message: "User not found"})
 }
 
-// const getUser = (req,res) => {
-//     let {user} = req;
-//     return res.status(200).json({ user })
-// }
+const getUser = async(req,res) => {
+    const {user} = req;
+    const {history,playLists,watchLater,likedVideos} = user;
+    res.status(200).json({history,playLists,watchLater,likedVideos})
+}
 
-module.exports = {registerUser, authUser , checkUser}
+module.exports = {registerUser, authUser,getUser , checkUser}
