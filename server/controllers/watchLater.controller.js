@@ -16,6 +16,7 @@ await user.save (async(err, user) => {
     if(err) {
         return res.status(500).json({success: false, message: "Internal server error. Try adding again"})
     }
+
 });
 return;
 }

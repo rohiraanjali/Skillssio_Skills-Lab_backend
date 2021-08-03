@@ -1,6 +1,5 @@
 const Users = require("../models/users.model");
 
-console.log(addToLikedVideos)
 
 const addToLikedVideos = async(req, res) => {
 const {uid, videoId} = req.params;
@@ -11,11 +10,13 @@ user.likedVideos.remove(videoId);
 user.likedVideos.push(videoId);
 
 await user.save (async(err, user) => {
-    console.log(likedVideos)
+
     if(user) {
         const {likedVideos} = await user.execPopulate({path: "likedVideos", populate: "video"});
+        console.log(likedVideos)
         return res.status(200).json({success: true, likedVideos, message: "Video added successfully to likedVideos"})
     }
+    console.log(likedVideos)
     if(err) {
         return res.status(500).json({success: false, message: "Internal server error. Try adding again"})
     }
