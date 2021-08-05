@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
             message: props => `${props.input} is not a valid email`,
         }
     },
-
     password: {
         type: String,
         required: "password is a required field",
@@ -52,7 +51,7 @@ const userSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Video"
     }],
-    playLists:[
+    playlists:[
         {
             name:{ 
                 type:String,

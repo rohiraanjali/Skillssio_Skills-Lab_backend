@@ -1,6 +1,5 @@
 const Users = require("../models/users.model");
 
-
 const addToLikedVideos = async(req, res) => {
 const {uid, videoId} = req.params;
 const user = await Users.findOne({_id: uid})

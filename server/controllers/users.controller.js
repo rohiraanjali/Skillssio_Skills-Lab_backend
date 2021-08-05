@@ -10,7 +10,7 @@ const userExists = await Users.findOne({ email });
 if(userExists) {
     return res.status(500).json({
         message: "Email address is already registered"
-     })
+    })
 }
 
 
@@ -67,6 +67,7 @@ const checkUser = async(req, res, next, uid) => {
 const user = await Users.findOne({_id: uid},{password:0,createdAt:0,updatedAt:0,__v:0}).lean()
 .populate({path: "history", model: "Video"})
 .populate({path: "watchLater", model: "Video"})
+.populate({path: "likedVideos", model: "Video"})
 .populate({path: "payLists", populate: {path: "videos" , model:"Video"}})
 
 if(user) {

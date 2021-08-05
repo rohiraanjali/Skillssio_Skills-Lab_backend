@@ -1,89 +1,91 @@
 const Users = require("../models/users.model");
 
-const checkUser = async(req , res, next, uid) => {
-const user = await Users.findById(uid);
-if(!user) {
-    return res.status(401).json({message: "User nor found."})
-}
-req.user = user;
-next();
+const checkUser = async(req, res, next, uid) => {
+    const user = await Users.findById(uid);
+
+    if(!user) {
+        return res.status(404).json("user not found")
+    }
+    req.user = user;
+    next();
 }
 
-const createPlayList = async(req, res) => {
+const createPlaylist = async(req, res) => {
     const {user} = req;
     const {name} = req.body;
 
-    user.playLists.push({name, video:[]})
+    user.playlists.push({name, videos:[]})
     await user.save((err, user) => {
         if(user) {
-            res.status(200).json({success: true, playLists: user.playLists, message: "Playlist created successfully"})
+            res.status(200).json({success: true,playlists: user.playlists, message: "playlist created sucessfully"})
         }
         if(err) {
-            res.status(500).json({success: false, message: "Some server error in creating playlist, Try again."})
+            res.status(500).json({success: false,message: "Something went wrong!"})
         }
     })
 }
 
-const deletePlayList = async(req, res) => {
+const deletePlaylist = async(req, res) => {
     const {user} = req;
-    const {playListId} = req.params;
+    const {playlistId} = req.params;
 
-    user.playLists = user.playLists.filter(playList => playList._id != playListId);
+    user.playlists = user.playlists.filter(playlist => playlist._id !== playlistId)
     await user.save((err, user) => {
         if(user) {
-            res.status(200).json({success: true, playLists: user.playLists, message: "playList deleted successfully"})
+            res.status(200).json({success: true, playlists: user.playlists, message: "playlist delted sucessfully"})
         }
         if(err) {
-            res.status(500).json({success: false, message: "Unable to delete due to server error :( Try again."})
+            res.status(500).json({success: false, message: "something went wrong, couldn;t delete the playlist."})
         }
     })
 }
 
-const addToPlayList = async(req, res) => {
+const addToPlaylist = async(req, res) => {
     const {user} = req;
-    const {playListId, videoId} = req.params;
+    const {playlistId, videoId} = req.params;
 
-    user.playLists = user.playLists.map(playList => {
-        if(playList._id == playListId) {
-            playList.videos.push(videoId);
-            return playList;
+    user.playlists = user.playlists.map(playlist => {
+        if(playlist._id == playlistId) {
+            playlist.videos.push(videoId);
+            return playlist;
         }
-        return playList;
+        return playlist;
     })
 
-    await user.save(async(err,user) => {
 
+    await user.save(async(err, user) => {
         if(user) {
-            const {playLists} = await user.execPopulate({path: "playLists", populate: {path: "videos", populate: "videos"}})
-            res.status(200).json({success: true, playLists, message: "Video added to playlist successfully"})
+            const {playlists} = await user.execpopulate({path: "playlists", populate:{path:"videos",populate:"videos"}})
+            res.status(200).json({success: true, playlists, message: "video added sucessfully"});
         }
         if(err) {
-            res.status(200).json({success: false, message: "Failed to add Video to playlist. Try again."})
+            return res.status(500).json({success: false, message: "something went wrong with server."})
         }
     })
 }
 
-const removeFromPlayList = async(req, res) => {
+const removeFroPlaylist = async(req, res) => {
     const {user} = req;
-    const {playListId, videoId} = req.params;
+    const {playlistId, videoId} = req.params;
 
-    user.playLists = user.playLists.map(playList => {
-        if(playList._id == playListId) {
-            playList.videos.remove(videoId);
-            return playList;
+    user.playlists = user.playlists.map(playlist => {
+        if(playlist._id == playlistId) {
+            playlist.videos.remove(videoId)
+            return playlist;
         }
-        return playList;
+        return playlist;
     })
-    await user.save(async(err,user) => {
 
+    await user.save(async(err, user) => {
         if(user) {
-            const {playLists} = await user.execPopulate({path: "playLists", populate: {path: "videos", populate: "videos"}})
-            res.status(200).json({success: true, playLists, message: "Video removed from playlist"})
+            const {playlists} = await user.execpopulate({path: "playlists", populate:{path: "videos", populate: "videos"}})
+            return res.status(200).json({success: true, playlists, message: "video removed from playlist"})
+
         }
         if(err) {
-            res.status(200).json({success: false, message: "Failed to remove Video from playlist. Try again."})
+            return res.status(500).json({success: false, message: "something went wrong with server "})
         }
     })
 }
 
-module.exports = {checkUser, createPlayList, deletePlayList, addToPlayList, removeFromPlayList};
+module.exports= {checkUser, createPlaylist, deletePlaylist, addToPlaylist, removeFroPlaylist}

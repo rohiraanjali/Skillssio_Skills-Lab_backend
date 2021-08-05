@@ -7,7 +7,7 @@ const videoresults = require('./routes/videos.router.js');
 const users = require('./routes/users.router.js');
 const historyVideos = require("./routes/history.router.js");
 const watchLaterVideos = require("./routes/watchLater.router.js");
-const playListVideos = require("./routes/playLists.router.js")
+const playListVideos = require("./routes/playlists.router.js")
 const likedVideos = require("./routes/likedVideos.router.js")
 // const video = require("./router/videos.router")
 const errorHandler  = require("./middlewares/error-handler.js")
@@ -29,7 +29,7 @@ app.use("/videos", videoresults);
 app.use("/users", users);
 app.use("/history", historyVideos);
 app.use("/watchLater", watchLaterVideos);
-app.use("/playLists", playListVideos)
+app.use("/playlists", playListVideos)
 app.use("/likedVideos", likedVideos)
 
 
