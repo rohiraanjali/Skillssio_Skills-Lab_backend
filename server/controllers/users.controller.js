@@ -68,7 +68,7 @@ const user = await Users.findOne({_id: uid},{password:0,createdAt:0,updatedAt:0,
 .populate({path: "history", model: "Video"})
 .populate({path: "watchLater", model: "Video"})
 .populate({path: "likedVideos", model: "Video"})
-.populate({path: "payLists", populate: {path: "videos" , model:"Video"}})
+.populate({path: "paylists", populate: {path: "videos" , model:"Video"}})
 
 if(user) {
     req.user = user;
@@ -81,8 +81,8 @@ return res.status(404).json({message: "User not found"})
 
 const getUser = async(req,res) => {
     const {user} = req;
-    const {history,playLists,watchLater,likedVideos} = user;
-    res.status(200).json({history,playLists,watchLater,likedVideos})
+    const {history,playlists,watchLater,likedVideos} = user;
+    res.status(200).json({history,playlists,watchLater,likedVideos})
 }
 
 module.exports = {registerUser, authUser,getUser , checkUser}
