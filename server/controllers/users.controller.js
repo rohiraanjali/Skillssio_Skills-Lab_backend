@@ -13,7 +13,6 @@ if(userExists) {
     })
 }
 
-
 const newUser = await Users.create({
     name,
     email, 
@@ -59,7 +58,7 @@ const authUser = asyncHandler(async(req,res) => {
     else {
         return res.status(500).json({
             message: "Invalid Email or password"
-         })
+        })
     }
 })
 

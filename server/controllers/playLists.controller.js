@@ -55,7 +55,7 @@ const addToPlaylist = async(req, res) => {
 
     await user.save(async(err, user) => {
         if(user) {
-            const {playlists} = await user.execPopulate({path: "playlists", populate:{path:"videos",populate:"videos"}})
+            const {playlists} = await user.execPopulate({path: "playlists", populate:{path:"videos",populate:"Videos"}})
             res.status(200).json({success: true, playlists, message: "video added sucessfully"});
         }
         if(err) {
