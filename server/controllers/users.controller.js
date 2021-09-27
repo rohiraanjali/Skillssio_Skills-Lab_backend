@@ -67,7 +67,7 @@ const user = await Users.findOne({_id: uid},{password:0,createdAt:0,updatedAt:0,
 .populate({path: "history", model: "Video"})
 .populate({path: "watchLater", model: "Video"})
 .populate({path: "likedVideos", model: "Video"})
-.populate({path: "paylists", populate: {path: "videos" , model:"Video"}})
+.populate({path: "playlists", populate: {path: "videos" , model:"Video"}})
 
 if(user) {
     req.user = user;
