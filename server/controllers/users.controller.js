@@ -2,13 +2,44 @@ const asyncHandler = require("express-async-handler");
 const Users = require("../models/users.model"); 
 const generateToken = require("../middlewares/createToken");
 
+
+// const registerUser = asyncHandler(async (req, res) => {
+//     const { name, email, password, pic } = req.body;
+  
+//     const userExists = await User.findOne({ email });
+  
+//     if (userExists) {
+//       res.status(404);
+//       throw new Error("User already exists");
+//     }
+  
+//     const user = await User.create({
+//       name,
+//       email,
+//       password,
+//       pic,
+//     });
+  
+//     if (user) {
+//       res.status(201).json({
+//         _id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         isAdmin: user.isAdmin,
+//         pic: user.pic,
+//         token: generateToken(user._id),
+//       });
+//     } else {
+//       res.status(400);
+//       throw new Error("User not found");
+//     }
+//   });
 const registerUser = asyncHandler(async(req, res) => {
 const {name, email, password, profilePicture} = req.body;
 
-console.log(userExists)
 const userExists = await Users.findOne({ email });
 if(userExists) {
-    return res.status(500).json({
+    return res.status(404).json({
         message: "Email address is already registered"
     })
 }
@@ -28,11 +59,11 @@ try {
             email: newUser.email,
             password: newUser.password,
             profilePicture: newUser.profilePicture,
-            message: "Hurray!!! User registered sucessfully"
+            message: "Hurray!!! User registered sucessfully. Please Login to continue"
         })
     }
 } catch(error) {
-   console.log(error.message);
+console.log(error.message);
 }
 //   res.status(400).json({
 //         message: "Some error occured. Try again."
