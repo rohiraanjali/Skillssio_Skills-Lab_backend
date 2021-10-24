@@ -3,7 +3,6 @@ const Users = require("../models/users.model");
 const addToHistory = async(req, res) => {
    const {uid,videoId} = req.params;
    const user = await Users.findOne({_id:uid});
-   console.log(user.history)
    console.log(user.history.find(vid => vid == videoId))
    if(user.history.find(vid => vid == videoId)){
       await user.history.remove(videoId);
@@ -52,4 +51,4 @@ const getHistory = async (req, res) => {
    res.json({history: user.history});
 }
 
-module.exports = {addToHistory , removeFromHistory, getHistory}; 
+module.exports = {addToHistory, removeFromHistory, getHistory}; 

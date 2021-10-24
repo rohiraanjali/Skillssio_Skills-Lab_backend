@@ -65,7 +65,7 @@ try {
 } catch(error) {
 console.log(error.message);
 }
-//   res.status(400).json({
+//   res.status(400).json({ m
 //         message: "Some error occured. Try again."
 //      })
 // }
