@@ -87,5 +87,5 @@ const removeFroPlaylist = async(req, res) => {
         }
     })
 }
-
+ 
 module.exports= {checkUser, createPlaylist, deletePlaylist, addToPlaylist, removeFroPlaylist}
