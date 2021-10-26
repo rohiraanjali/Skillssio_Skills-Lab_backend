@@ -1,9 +1,9 @@
 const Users = require("../models/users.model");
 
 const addToHistory = async(req, res) => {
+   // heoku cli install hai? hnn
    const {uid,videoId} = req.params;
    const user = await Users.findOne({_id:uid});
-   console.log(user.history.find(vid => vid == videoId))
    if(user.history.find(vid => vid == videoId)){
       await user.history.remove(videoId);
       user.history.push(videoId);

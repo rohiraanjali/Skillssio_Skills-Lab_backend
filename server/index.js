@@ -14,7 +14,7 @@ const errorHandler  = require("./middlewares/error-handler.js")
 const routeNotFound = require("./middlewares/route-not-found.js")
 
 const app = express()
-const port = 5000
+const port = process.env.PORT || 5000
 
 initializeDBConnection();
 
